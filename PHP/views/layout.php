@@ -1,27 +1,42 @@
 <!DOCTYPE html>
-<html>
+<html lang="en">
 <head>
-    <title><?= $pageTitle ?></title>
-    <link rel="stylesheet" href="assets/style.css">
+    <meta charset="UTF-8">
+    <title>Notes App</title>
+    <link rel="stylesheet" href="/public/assets/style.css">
+<link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
 </head>
 <body>
 
-<?php
-$current = $_GET['page'] ?? 'home';
-?>
-
-<nav>
-    <ul>
-        <li><a href="?page=home" class="<?= $current == 'home' ? 'active' : '' ?>">Tasks</a></li>
-        <li><a href="?page=about" class="<?= $current == 'about' ? 'active' : '' ?>">About</a></li>
-        <li><a href="?page=notes" class="<?= $current == 'notes' ? 'active' : '' ?>">Notes</a></li>
-        <li><a href="?page=add-note" class="<?= $current == 'add-note' ? 'active' : '' ?>">+ New Note</a></li>
-    </ul>
+<nav class="navbar navbar-expand-lg navbar-dark bg-dark">
+  <div class="container">
+    <a class="navbar-brand" href="/">Notes App</a>
+    <div class="collapse navbar-collapse">
+      <ul class="navbar-nav ms-auto">
+        <li class="nav-item"><a class="nav-link" href="/">Home</a></li>
+        <li class="nav-item"><a class="nav-link" href="/notes">Notes</a></li>
+        <li class="nav-item"><a class="nav-link" href="/about">About</a></li>
+        <li class="nav-item"><a class="nav-link" href="/notes/create">Add Note</a></li>
+        <li class="nav-item"><a class="nav-link" href="/task-list">Task List</a></li>
+      </ul>
+      <?php if (isset($_SESSION['user'])): ?>
+        <a class="nav-link text-danger" href="/logout">Logout</a>
+      <?php else: ?>
+        <a class="nav-link text-success" href="/login">Login</a>
+      <?php endif; ?>
+    </div>
+  </div>
 </nav>
-
-<main>
-    <?php include $viewFile; ?>
+<?php if (\Core\Session::has('user')): ?>
+    <form method="POST" action="/logout">
+        <input type="hidden" name="_method" value="DELETE">
+        <button>Logout</button>
+    </form>
+<?php endif; ?>
+<main class="container mt-4">
+    <?= $content ?>
 </main>
+
 
 </body>
 </html>

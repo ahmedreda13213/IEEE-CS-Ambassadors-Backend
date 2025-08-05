@@ -1,15 +1,15 @@
 <h1>Add Note</h1>
 
-<form action="?page=store-note" method="POST">
+<form action="/notes" method="POST">
     <div>
         <label>Title:</label><br>
-        <input type="text" name="title" required>
+        <input type="text" name="title" value="<?= $old['title'] ?? '' ?>">
+        <p style="color:red;"><?= $errors['title'] ?? '' ?></p>
     </div>
-    <br>
     <div>
-        <label>Body:</label><br>
-        <textarea name="body" rows="5" required></textarea>
+        <label>Content:</label><br>
+        <textarea name="content"><?= $old['content'] ?? '' ?></textarea>
+        <p style="color:red;"><?= $errors['content'] ?? '' ?></p>
     </div>
-    <br>
-    <button type="submit">Save Note</button>
+    <button type="submit">Add</button>
 </form>

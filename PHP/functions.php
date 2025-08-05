@@ -1,13 +1,25 @@
 <?php
 
-function formatTask($task) {
-    $status = $task['completed']
-        ? "<span class='status done'> Done</span>"
-        : "<span class='status pending'> Pending</span>";
-    return "<li>{$task['title']} {$status}</li>";
+function base_path($path = '') {
+    return __DIR__ . '/' . $path;
 }
-function abort($message = 'Page not found') {
-    http_response_code(404);
-    echo "<h1>404</h1><p>$message</p>";
+
+function view($name, $attributes = [])
+{
+    extract($attributes);
+
+    ob_start();
+    require base_path("views/{$name}.php");
+    $content = ob_get_clean();
+
+    require base_path("views/layout.php");
+}
+
+function redirect($path)
+{
+    header("Location: {$path}");
     exit();
+}
+function app() {
+    return \Core\Container::getInstance();
 }
