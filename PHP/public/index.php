@@ -1,23 +1,35 @@
 
-<?php
-ini_set('display_errors', 1);
-error_reporting(E_ALL);
+
+<?php 
+
+
+session_start();
+
 require __DIR__ . '/../vendor/autoload.php';
 require __DIR__ . '/../functions.php';
-require __DIR__ . '/../routes.php';
-
 
 use Core\App;
 use Core\Container;
 use Core\Session;
 
-Session::start();
+Session::unflash();
 
 $container = new Container();
-
 App::setContainer($container);
+
 $router = require __DIR__ . '/../routes.php';
+
 $uri = parse_url($_SERVER['REQUEST_URI'], PHP_URL_PATH);
 $method = $_SERVER['REQUEST_METHOD'];
-$router->route($uri, $method);
 
+if ($method === 'POST' && isset($_POST['_method'])) {
+    $method = strtoupper($_POST['_method']);
+}
+
+try {
+    $router->route($uri, $method);
+} catch (Exception $e) {
+    
+    http_response_code(404);
+    echo "Page not found";
+}

@@ -1,10 +1,13 @@
+<?php session_start(); ?>
+<?php \Core\Session::unflash(); ?>
+
 <!DOCTYPE html>
 <html lang="en">
 <head>
     <meta charset="UTF-8">
     <title>Notes App</title>
-    <link rel="stylesheet" href="/public/assets/style.css">
-<link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link rel="stylesheet" href="/assets/style.css">
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
 </head>
 <body>
 
@@ -18,25 +21,20 @@
         <li class="nav-item"><a class="nav-link" href="/about">About</a></li>
         <li class="nav-item"><a class="nav-link" href="/notes/create">Add Note</a></li>
         <li class="nav-item"><a class="nav-link" href="/task-list">Task List</a></li>
+
+        <?php if (isset($_SESSION['user'])): ?>
+          <li class="nav-item"><a class="nav-link text-danger" href="/logout">Logout</a></li>
+        <?php else: ?>
+          <li class="nav-item"><a class="nav-link text-success" href="/login">Login</a></li>
+        <?php endif; ?>
       </ul>
-      <?php if (isset($_SESSION['user'])): ?>
-        <a class="nav-link text-danger" href="/logout">Logout</a>
-      <?php else: ?>
-        <a class="nav-link text-success" href="/login">Login</a>
-      <?php endif; ?>
     </div>
   </div>
 </nav>
-<?php if (\Core\Session::has('user')): ?>
-    <form method="POST" action="/logout">
-        <input type="hidden" name="_method" value="DELETE">
-        <button>Logout</button>
-    </form>
-<?php endif; ?>
-<main class="container mt-4">
-    <?= $content ?>
-</main>
 
+<main class="container mt-4">
+    <?= $content ?? '' ?>
+</main>
 
 </body>
 </html>

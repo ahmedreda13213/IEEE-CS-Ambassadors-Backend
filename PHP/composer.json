@@ -3,7 +3,16 @@
   "psr-4": {
     "Core\\": "Core/",
     "Controllers\\": "controllers/",
-    "Middleware\\": "Middleware/"
+    "Middleware\\": "Middleware/",
+    "Forms\\": "Forms/"
   }
-}
+},
+  "require-dev": {
+    "pestphp/pest": "^3.8"
+  },
+  "config": {
+    "allow-plugins": {
+      "pestphp/pest-plugin": true
+    }
+  }
 }

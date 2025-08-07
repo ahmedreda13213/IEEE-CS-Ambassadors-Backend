@@ -17,7 +17,11 @@ class Router
         $this->routes['POST'][$uri] = $action;
         return $this;
     }
-
+     public function delete($uri, $controller)
+    {
+    $this->routes['DELETE'][$uri] = $controller;
+    return $this;
+     }
     public function route($uri, $method)
     {
         if (isset($this->routes[$method][$uri])) {

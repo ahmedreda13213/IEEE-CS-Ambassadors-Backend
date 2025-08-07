@@ -1,74 +1,102 @@
-<?php
-
+<?php 
 namespace Controllers;
 
-use Core\Session;
 use Core\Validator;
+use Core\Session;
 use Core\Response;
 
 class AuthController
 {
-    public function create()
-    {
-        return view('register');
-    }
-
-    public function store()
-    {
-        $errors = [];
-
-        if (!isset($_POST['email']) || !Validator::email($_POST['email'])) {
-            $errors['email'] = 'Please provide a valid email.';
-        }
-
-        if (!isset($_POST['password']) || !Validator::string($_POST['password'], 7, 255)) {
-            $errors['password'] = 'Password must be at least 7 characters.';
-        }
-
-        if (!empty($errors)) {
-            return view('register', [
-                'errors' => $errors
-            ]);
-        }
-
-        Session::put('user', [
-            'email' => $_POST['email']
-        ]);
-
-        Response::redirect('/');
-    }
 
      public function showLoginForm()
     {
-        return view('login');
+        return view("login");
     }
 
-    
     public function login()
     {
+        $email = $_POST['email'];
+        $password = $_POST['password'];
+
+        
         $errors = [];
 
-        if (!isset($_POST['email']) || !Validator::email($_POST['email'])) {
-            $errors['email'] = 'Please provide a valid email.';
+        if (!Validator::email($email)) {
+            $errors['email'] = 'Please provide a valid email address.';
         }
 
-        if (!isset($_POST['password']) || !Validator::string($_POST['password'], 7, 255)) {
+        if (!Validator::string($password, 7, 255)) {
             $errors['password'] = 'Password must be at least 7 characters.';
         }
 
         if (!empty($errors)) {
-            return view('login', ['errors' => $errors]);
+           
+            Session::flash('errors', $errors);
+            Session::flash('old', ['email' => $email]);
+
+            Response::redirect('/login');
         }
 
-        Session::put('user', ['email' => $_POST['email']]);
+        
+        $users = json_decode(file_get_contents('database/users.json'), true);
+
+        $user = null;
+        foreach ($users as $u) {
+            if ($u['email'] === $email && password_verify($password, $u['password'])) {
+                $user = $u;
+                break;
+            }
+        }
+
+        if (!$user) {
+            Session::flash('errors', ['login' => 'Email or password incorrect']);
+            Session::flash('old', ['email' => $email]);
+            Response::redirect('/login');
+        }
+
+       
+        $_SESSION['user'] = $user;
+
         Response::redirect('/');
     }
-
-   
-    public function logout()
+       public function store()
     {
-        Session::destroy();
-        Response::redirect('/login');
+        
+        $email = $_POST['email'] ?? '';
+        $password = $_POST['password'] ?? '';
+
+        $errors = [];
+
+        if (!Validator::email($email)) {
+            $errors['email'] = 'Please provide a valid email.';
+        }
+
+        if (!Validator::string($password, 7, 255)) {
+            $errors['password'] = 'Password must be at least 7 characters.';
+        }
+
+        if (!empty($errors)) {
+            
+            Session::flash('errors', $errors);
+            Session::flash('old', $_POST);
+            return Response::redirect('/login');
+        }
+
+       
+        if ($email === 'admin@example.com' && $password === 'password123') {
+            Session::put('user', ['email' => $email]);
+            return Response::redirect('/');
+        }
+
+        Session::flash('errors', ['email' => 'Invalid credentials.']);
+        Session::flash('old', $_POST);
+        return Response::redirect('/login');
     }
 
+    public function logout()
+    {
+        unset($_SESSION['user']);
+        session_destroy();
+        Response::redirect('/');
+    }
 }

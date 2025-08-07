@@ -1,23 +1,21 @@
+
+
 <h1>Login</h1>
 
-<?php if (!empty($errors)): ?>
-    <ul style="color: red;">
-        <?php foreach ($errors as $error): ?>
-            <li><?= $error ?></li>
-        <?php endforeach; ?>
-    </ul>
+<?php if ($error = \Core\Session::flash('error')) : ?>
+    <p style="color:red;"><?= $error ?></p>
 <?php endif; ?>
 
 <form method="POST" action="/login">
-    <div>
-        <label>Email:</label>
-        <input type="email" name="email" required>
-    </div>
+    <input type="email" name="email" placeholder="Email" value="<?= \Core\Session::get('old')['email'] ?? '' ?>">
+    <?php if ($err = \Core\Session::get('errors')['email'] ?? false) : ?>
+        <p style="color:red"><?= $err ?></p>
+    <?php endif; ?>
 
-    <div>
-        <label>Password:</label>
-        <input type="password" name="password" required>
-    </div>
+    <input type="password" name="password" placeholder="Password">
+    <?php if ($err = \Core\Session::get('errors')['password'] ?? false) : ?>
+        <p style="color:red"><?= $err ?></p>
+    <?php endif; ?>
 
-    <button type="submit">Log In</button>
+    <button type="submit">Login</button>
 </form>
