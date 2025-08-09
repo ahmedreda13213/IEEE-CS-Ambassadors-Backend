@@ -1,0 +1,11 @@
+1. php artisan serve vs XAMPP
+php artisan serve:uses Laravel’s built-in PHP development server (based on PHP’s php -S command).it A simple built and No setup needed
+XAMPP: A full local server with Apache, MySQL, and PHP. Needs setup but is closer to real hosting
+-----------------------------------------------------------
+2. routes/web.php vs routes/api.php
+web.php:Contains routes intended for web pages. These routes are assigned the web middleware group by default and sessions, cookies.
+api.php:Contains routes intended for APIs. These routes are stateless and assigned the api middleware group by default and no sessions, usually returns JSON.
+-----------------------------------------------------------
+3. Controllers vs. Closures in Laravel routes 
+Closures: Define the route logic directly in the routes/web.php or routes/api.php file using anonymous functions.
+Controllers:Organize route logic into dedicated classes, making the code cleaner, reusable, and easier to maintain.
