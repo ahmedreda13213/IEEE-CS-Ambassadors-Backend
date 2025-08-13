@@ -1,0 +1,25 @@
+Q1 :When visiting http://localhost:8000/about:
+1.Browser sends request to Laravel.
+
+2.Laravel’s public/index.php starts the app.
+
+3.HTTP Kernel runs global middleware.
+
+3.Router checks routes/web.php for /about.
+
+4.The matched controller or closure runs.
+
+5.If it returns a view, Blade renders it.
+
+6.Laravel sends the HTML back to the browser.
+
+------------------------------------
+Q2: If you remove CSRF token from a form:
+Laravel will block the request with 419 Page Expired because the CSRF middleware needs the token to protect against fake requests.
+
+------------------------------------------------------------------------
+Q3 :Difference between {{ $variable }} and {!! $variable !!}:
+{{ $variable }}:escapes HTML (safe).
+
+{!! $variable !!}:shows raw HTML (unsafe if user input).
+

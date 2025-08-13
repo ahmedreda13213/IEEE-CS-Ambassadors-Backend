@@ -2,59 +2,23 @@
 
 use Illuminate\Support\Facades\Route;
 use \Illuminate\Support\Arr;
+use App\Models\job;
+
+
+
+
 Route::get('/', function () {
     return view('home' );
 });
+
 Route::get('/job', function () {
+    $jobs = Job::with(relations: 'employer')->cursorPaginate(3);
     return view('jobs',[
-        'jobs' =>[
-             [
-                'id'=> 1,
-              'title' => 'Director',
-              'salary'=> '$50,000'
-
-             ],
-              [
-                'id'=> 2,
-              'title' => 'Programmer',
-              'salary'=> '$150,000'
-
-              ],
-               [
-                'id'=> 3,
-              'title' => 'Teacher',
-              'salary'=> '$10,000'
-
-             ],
-             
-        ]
-
-        ]);
+        'jobs' =>  $jobs ]);
 });
 
 Route::get('/jobs/{id}', function ($id) {
-      $jobs = [
-             [
-                'id'=> 1,
-              'title' => 'Director',
-              'salary'=> '$50,000'
-
-             ],
-              [
-                'id'=> 2,
-              'title' => 'Programmer',
-              'salary'=> '$150,000'
-
-              ],
-               [
-                'id'=> 3,
-              'title' => 'Teacher',
-              'salary'=> '$10,000'
-
-             ],
-             
-            ];
-          $job =  Arr::first($jobs,fn($job) => $job['id'] == $id );
+          $job = Job::find( $id );
           
             
 
