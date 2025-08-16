@@ -33,30 +33,25 @@
           <div class="flex space-x-4">
             <!-- Current: "bg-gray-900 text-white", Default: "text-gray-300 hover:bg-white/5 hover:text-white" -->
             <x-nav-link href="/" :active="request()->is('/')">Home</x-nav-link>
-            <x-nav-link href="/job" :active="request()->is('job')">Jobs</x-nav-link>
+            <x-nav-link href="/jobs" :active="request()->is('jobs')">Jobs</x-nav-link>
             <x-nav-link href="/contact" :active="request()->is('contact')">Contact</x-nav-link>
           </div>
         </div>
       </div>
       <div class="absolute inset-y-0 right-0 flex items-center pr-2 sm:static sm:inset-auto sm:ml-6 sm:pr-0">
-        <button type="button" class="relative rounded-full p-1 text-gray-400 focus:outline-2 focus:outline-offset-2 focus:outline-indigo-500">
-          <span class="absolute -inset-1.5"></span>
-          <span class="sr-only">View notifications</span>
-          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" data-slot="icon" aria-hidden="true" class="size-6">
-            <path d="M14.857 17.082a23.848 23.848 0 0 0 5.454-1.31A8.967 8.967 0 0 1 18 9.75V9A6 6 0 0 0 6 9v.75a8.967 8.967 0 0 1-2.312 6.022c1.733.64 3.56 1.085 5.455 1.31m5.714 0a24.255 24.255 0 0 1-5.714 0m5.714 0a3 3 0 1 1-5.714 0" stroke-linecap="round" stroke-linejoin="round" />
-          </svg>
-        </button>
+         @guest
+            <x-nav-link href="/login" :active="request()->is('login')">Log In</x-nav-link>  
+       <x-nav-link href="/register" :active="request()->is('register')">Register</x-nav-link>  
+        @endguest
 
-        <!-- Profile dropdown -->
-        <el-dropdown class="relative ml-3">
-          <button class="relative flex rounded-full focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-indigo-500">
-            <span class="absolute -inset-1.5"></span>
-            <span class="sr-only">Open user menu</span>
-            <img src="https://images.unsplash.com/photo-1472099645785-5658abf4ff4e?ixlib=rb-1.2.1&ixid=eyJhcHBfaWQiOjEyMDd9&auto=format&fit=facearea&facepad=2&w=256&h=256&q=80" alt="" class="size-8 rounded-full bg-gray-800 outline -outline-offset-1 outline-white/10" />
-          </button>
-
+         @auth
+         <form method="POST" action="/logout">
+          @csrf
           
-      </div>
+          <x-form-buttom>Log Out</x-form-buttom>
+         </form>
+        @endauth
+    </div>
     </div>
   </div>
 
@@ -70,14 +65,17 @@
   </el-disclosure>
 </nav>
   <header class="bg-white shadow">
-   <div class="mx-auto max-w-7xl px-4 py-6 sm:px-6 lg:px-8 ">
+   <div class="mx-auto max-w-7xl px-4 py-6 sm:px-6 lg:px-8  sm:flex sm:justify-between">
     <h1 class="text-3xl font-bold tracking-tight text-gray-900">{{ $heading }}</h1>
-   </div>
+
+   <x-buttom href="/jobs/create">Create Job</x-buttom>
+  </div>
   </header>
   <main>
     <div class="mx-auto max-w-7xl py-6 sm:px-6 lg:px-8">
            {{ $slot }}
     </div>
   </main>
+  
 </body>
 </html>

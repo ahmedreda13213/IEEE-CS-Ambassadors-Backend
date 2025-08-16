@@ -15,7 +15,7 @@ Q1 :When visiting http://localhost:8000/about:
 
 ------------------------------------
 Q2: If you remove CSRF token from a form:
-Laravel will block the request with 419 Page Expired because the CSRF middleware needs the token to protect against fake requests.
+Laravel will block the request with 419 Page Expired because the CSRF middleware needs the token to protect against fake  requests (CSRF attacks).
 
 ------------------------------------------------------------------------
 Q3 :Difference between {{ $variable }} and {!! $variable !!}:

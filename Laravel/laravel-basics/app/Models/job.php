@@ -8,7 +8,7 @@ use Illuminate\Database\Eloquent\Factories\HasFactory;
     use HasFactory;
     protected $table = 'job_listings';
 
-    protected $fillable = ['title', 'salary'];
+    protected $guarded = [];
 
     public function employer() {
 
