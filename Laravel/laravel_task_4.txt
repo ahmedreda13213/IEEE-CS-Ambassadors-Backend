@@ -1,0 +1,24 @@
+Q1-Best Approach to create new Laravel Project
+
+Use composer : composer create-project Laravel/Laravel project-name
+
+or use the Laravel installer :Laravel new project-name
+
+then configure the .env file run: php artisan serve
+
+------------------------
+Q2-Best order in crafting Application Logic
+
+1-Understand requirements- define entities and relationships
+
+2-setup database - create migrations and schema
+
+3-create models - map database tables to eloquent models
+
+4-Define routes - structure endpoints for app
+
+5-build controllers - implement main logic (CRUD)
+
+6-connect view - handle UI and data display
+
+7- add middleware and auth - manage access control and security
